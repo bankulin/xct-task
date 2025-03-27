@@ -1,0 +1,40 @@
+repositories:
+  - name: eks
+    url: https://aws.github.io/eks-charts
+  - name: matheusfm
+    url: https://matheusfm.dev/charts
+releases:
+  - name: aws-load-balancer-controller
+    namespace: kube-system
+    chart: eks/aws-load-balancer-controller
+    set:
+      - name: service.type
+        value: ClusterIP
+      - name: clusterName
+        value: ref+awsssm://terraform/dev/xct-eks/eks-cluster-name
+      - name: serviceAccount.name
+        value: aws-load-balancer-controller
+    version: 1.10.1
+    values:
+      - karpenter_iam_role: ref+awsssm://terraform/dev/xct-eks/eks-node-group-role-name
+      - cluster_name: ref+awsssm://terraform/dev/xct-eks/eks-cluster-name
+  - name: httpbin
+    namespace: httpbin
+    chart: matheusfm/httpbin
+  - name: httpbin-internal
+    namespace: httpbin-internal
+    chart: matheusfm/httpbin
+  - name: tgb
+    namespace: httpbin-internal
+    chart: oci://ghcr.io/bankulin/xct-tgb
+    version: 0.1.0
+    values:
+      - load_balancer_sg_id: ref+awsssm:///terraform/dev/xct-eks/internal-eks-alb-sg
+      - target_group_arn: ref+awsssm:///terraform/dev/xct-eks/internal-tg-arn
+  - name: tgb
+    namespace: httpbin
+    chart: oci://ghcr.io/bankulin/xct-tgb
+    version: 0.1.0
+    values:
+      - load_balancer_sg_id: ref+awsssm:///terraform/dev/xct-eks/external-eks-alb-sg
+      - target_group_arn: ref+awsssm:///terraform/dev/xct-eks/external-tg-arn

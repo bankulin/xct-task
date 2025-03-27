@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: httpbin
+  labels:
+    name: httpbin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin
+  namespace: httpbin
+  labels:
+    app: httpbin
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: httpbin
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpbin
+  namespace: httpbin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: httpbin
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: httpbin
+        version: v1
+    spec:
+      containers:
+      - image: docker.io/kennethreitz/httpbin
+        imagePullPolicy: IfNotPresent
+        name: httpbin
+        ports:
+        - containerPort: 80
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: httpbin-tgb
+  namespace: httpbin
+spec:
+  ipAddressType: ipv4
+  networking:
+    ingress:
+    - from:
+      - securityGroup:
+          groupID: sg-0b6b06eee697f1e75
+      ports:
+        - port: 80
+          protocol: TCP
+  serviceRef:
+    name: httpbin
+    port: 80
+  targetGroupARN: arn:aws:elasticloadbalancing:eu-west-1:940270583521:targetgroup/xct-dev-external-httpbin-tg/949f0331b22ded2b

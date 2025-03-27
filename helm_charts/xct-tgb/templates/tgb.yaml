@@ -1,0 +1,20 @@
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: httpbin-tgb
+spec:
+  targetType: ip
+  ipAddressType: ipv4
+  networking:
+    ingress:
+    - from:
+      - securityGroup:
+          groupID: {{ .Values.load_balancer_sg_id }}
+      ports:
+        - port: 8080
+          protocol: TCP
+  serviceRef:
+    name: httpbin
+    port: 80
+  targetGroupARN: {{ .Values.target_group_arn }}

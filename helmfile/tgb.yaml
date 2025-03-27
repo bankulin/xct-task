@@ -1,0 +1,20 @@
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: httpbin-tgb
+  namespace: httpbin
+spec:
+  ipAddressType: ipv4
+  networking:
+    ingress:
+    - from:
+      - securityGroup:
+          groupID: sg-0b40759feb439c84d
+      ports:
+        - port: 8080
+          protocol: TCP
+  serviceRef:
+    name: httpbin
+    port: 80
+  targetGroupARN: arn:aws:elasticloadbalancing:eu-west-1:940270583521:targetgroup/xct-dev-external-httpbin-tg/2050bb94dad6f8ac
