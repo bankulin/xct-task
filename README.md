@@ -35,7 +35,7 @@ The following AWS resources are needed:
                             -var 'route53_zone_id=ROUTE53_ZONE_ID' \n
                             -var 'key_name=EC2_KEY_PAIR \n
                             -var 'admin_role_arn=ADMIN_ROLE_ARN \n
-                            -var 'devops_role_arn=DEVOPS_ROLE_ARN \n
+                            -var 'devops_role_arn=DEVOPS_ROLE_ARN \n`
 
 ### DEPLOY HELM CHARTS USING HELMFILE
 1. cd helmfile
@@ -58,7 +58,7 @@ Private subnets contain all resources that do not require public IP addresses, s
 Data subnets are unused in this solution, but are added to demonstrate best practice. Data subnets are reserved for persistent data (e.g. databases/RDS instances). Data subnets have an extra layer of security as there is an explicit DENY on the postgres TCP port for sources outside the VPC. This protects against future VPC peering from inadvertantly getting access to data.
 
 ## INGRESS
-Ingress to the EKS cluster is via the AWS Load Balancer Controller using (Target Group Binding)[https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.1/guide/targetgroupbinding/targetgroupbinding/] only. This allows for multiple deployments on the cluster to use the same load balancer (reduces cost)
+Ingress to the EKS cluster is via the AWS Load Balancer Controller using [Target Group Binding](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.1/guide/targetgroupbinding/targetgroupbinding/) only. This allows for multiple deployments on the cluster to use the same load balancer (reduces cost)
 
 ### MODULES
 
