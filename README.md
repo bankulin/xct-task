@@ -18,6 +18,8 @@ The following AWS resources are needed:
 3. An EC2 key pair
 5. An IAM role for root access to the EKS cluster, the "devops" role
 
+The solution makes use of AWS Parameter Store for the passing of outputs between the modules.
+
 ## DEPLOYMENT INSTRUCTIONS
 1. [Install terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 2. [Install helm](https://helm.sh/docs/intro/install/)
