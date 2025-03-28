@@ -16,8 +16,7 @@ The following AWS resources are needed:
 1. IAM role with sufficient permissions to create/upgrade/delete resources
 2. A route53 public hosted zone
 3. An EC2 key pair
-4. An IAM role to be used for root access to the EKS cluster
-5. An IAM role for normal user access to the EKS cluster
+5. An IAM role for root access to the EKS cluster, the "devops" role
 
 ## DEPLOYMENT INSTRUCTIONS
 1. [Install terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
@@ -34,8 +33,7 @@ The following AWS resources are needed:
 2. Run `terraform init && terraform apply -var 'environment=dev' \n
                             -var 'route53_zone_id=ROUTE53_ZONE_ID' \n
                             -var 'key_name=EC2_KEY_PAIR \n
-                            -var 'admin_role_arn=ADMIN_ROLE_ARN \n
-                            -var 'devops_role_arn=DEVOPS_ROLE_ARN \n`
+                            -var 'admin_role_arn=ADMIN_ROLE_ARN \n`
 
 ### DEPLOY HELM CHARTS USING HELMFILE
 1. cd helmfile
